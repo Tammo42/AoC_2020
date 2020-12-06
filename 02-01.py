@@ -1,38 +1,56 @@
-class EntryLine:
-    min_occ = 0
-    max_occur = 0
-    symbol = ""
-    passwd = ""
+import os
 
+class EntryLine:
     def __init__(self, min_occur, max_occur, symbol, passwd):
         self.min_occur = min_occur
         self.max_occur = max_occur
         self.symbol = symbol
         self.passwd = passwd
 
-class Day02_1:
-    counter = 0
-    input_list = []
-
+class Day02_01:
     def __init__(self, input_path):
+        self.good_counter = 0
+        self.bad_counter  = 0
+        self.input_list = []
         for x in open(input_path):
             # get min
             parts = x.split("-", 1)
-            min_occur = parts[0]
+            min_occur = int(parts[0])
             x = parts[1]
             # get max
             parts = x.split(" ", 1)
-            max_occur = parts[0]
+            max_occur = int(parts[0])
             x = parts[1]
             # get symbol
             parts = x.split(": ", 1)
             symbol = parts[0]
             # get passwd
-            passwd = parts[1]
-            input_list.append(EntryLine(min_occur, max_occur, symbol, passwd))
+            passwd = parts[1].rstrip()
+            entry = EntryLine(min_occur, max_occur, symbol, passwd)
+            self.input_list.append(entry)
+            self.results = dict()
 
-    def check_password(self, min_occur, max_occur, passwd):
-        pass
+    def check_password(self, entry):
+        counter = 0
+        for sym in entry.passwd:
+            if entry.symbol == sym:
+                counter = counter + 1
+        if entry.min_occur <= counter and counter <= entry.max_occur:
+            self.results[entry] = True
+            self.good_counter = self.good_counter + 1
+        else:
+            self.results[entry] = False
+            self.bad_counter = self.bad_counter + 1
 
     def do(self):
-        pass
+        for entry in self.input_list:
+            self.check_password(entry)
+        print("good: ", self.good_counter)
+        print("bad:  ", self.bad_counter)
+
+input_path = os.path.dirname(os.path.realpath(__file__)) + "/02-01_input.txt"
+mission = Day02_01(input_path)
+mission.do()
+print("")
+#mission = Day02_01(input_path)
+#mission.do()
