@@ -1,17 +1,18 @@
 import os
+from adventofcode import AdventDay
 
 class EntryLine:
     """
     An object for one password entry
     """
-    def __init__(self, min_occur, max_occur, symbol, passwd):
+    def __init__(self, min_occur, max_occur, symbol, passwd) -> None:
         self.min_occur = min_occur
         self.max_occur = max_occur
         self.symbol = symbol
         self.passwd = passwd
 
-class Day02_01:
-    def __init__(self, input_path):
+class Day02_01(AdventDay):
+    def __init__(self, input_path) -> None:
         self.good_counter = 0
         self.bad_counter  = 0
         self.input_list = []
@@ -33,7 +34,7 @@ class Day02_01:
             self.input_list.append(entry)
             self.results = dict()
 
-    def check_password(self, entry):
+    def check_password(self, entry) -> None:
         counter = 0
         # count the occurences of the symbol
         for sym in entry.passwd:
@@ -47,14 +48,14 @@ class Day02_01:
             self.results[entry] = False
             self.bad_counter = self.bad_counter + 1
 
-    def do(self):
+    def do(self) -> None:
         for entry in self.input_list:
             self.check_password(entry)
         print("good: ", self.good_counter)
         print("bad:  ", self.bad_counter)
 
-class Day02_02:
-    def __init__(self, input_path):
+class Day02_02(AdventDay):
+    def __init__(self, input_path) -> None:
         self.good_counter = 0
         self.bad_counter  = 0
         self.input_list = []
@@ -76,7 +77,7 @@ class Day02_02:
             self.input_list.append(entry)
             self.results = dict()
 
-    def check_password(self, entry):
+    def check_password(self, entry) -> None:
         if entry.min_occur == 0 or entry.max_occur == 0:
             print("ERROR: Toboggan Corporate Policy does not know of this 0 you entered.")
             self.results[entry] = False
@@ -90,7 +91,7 @@ class Day02_02:
             self.results[entry] = False
             self.bad_counter = self.bad_counter + 1
 
-    def do(self):
+    def do(self) -> None:
         for entry in self.input_list:
             self.check_password(entry)
         print("good: ", self.good_counter)

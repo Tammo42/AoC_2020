@@ -1,5 +1,6 @@
 import os
 from enum import Enum
+from adventofcode import AdventDay
 
 class FieldType(Enum):
     FREE = 0
@@ -7,7 +8,7 @@ class FieldType(Enum):
     PASSED = 2
 
 class Grid:
-    def __init__(self, input_path):
+    def __init__(self, input_path) -> None:
         self.rows = list()
         self.line_width = 0
         for line in open(input_path, "r"):
@@ -19,7 +20,7 @@ class Grid:
             self.rows.append(line)
         self.height = len(self.rows)
     
-    def getFieldType(self, width, height):
+    def getFieldType(self, width, height) -> FieldType:
         if height < 1:
             print("You need to enter the forest, to be one with the forest.")
         if self.height <= height:
@@ -36,12 +37,12 @@ class Grid:
             return FieldType.TREE
 
 class Slope:
-    def __init__(self, input_path, angle_right, angle_down=1):
+    def __init__(self, input_path, angle_right, angle_down=1) -> None:
         self.forest = Grid(input_path)
         self.angle_right = angle_right
         self.angle_down = angle_down
 
-    def get_trees_on_slope(self):
+    def get_trees_on_slope(self) -> int:
         tree_counter = 0
         # (width, height)
         cur_pos = (0, 0)
@@ -52,20 +53,20 @@ class Slope:
             cur_pos = (cur_pos[0] + self.angle_right, cur_pos[1] + self.angle_down)
         return tree_counter
 
-class Day03_01:
-    def __init__(self, input_path, angle_right, angle_down=1):
+class Day03_01(AdventDay):
+    def __init__(self, input_path, angle_right, angle_down=1) -> None:
         self.slope = Slope(input_path, angle_right, angle_down)
 
-    def do(self):
+    def do(self) -> None:
         print("Met", self.slope.get_trees_on_slope(), "trees.")
 
-class Day03_02:
-    def __init__(self, input_path, angles):
+class Day03_02(AdventDay):
+    def __init__(self, input_path, angles) -> None:
         self.slopes = list()
         for (angle_right, angle_down) in angles:
             self.slopes.append(Slope(input_path, angle_right, angle_down))
 
-    def do(self):
+    def do(self) -> None:
         product = 1
         for slope in self.slopes:
             trees = slope.get_trees_on_slope()

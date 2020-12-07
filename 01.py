@@ -1,9 +1,10 @@
 # TODO start a thread for each index (alternatively go through the array with a map and a threadpool)
 
 import os
+from adventofcode import AdventDay
 
-class Day01_01:
-    def __init__(self, input_path):
+class Day01_01(AdventDay):
+    def __init__(self, input_path) -> None:
         # initialize the first puzzle
         # create a results dict, parse the list of numbers and sort it
         self.results = dict()
@@ -16,7 +17,7 @@ class Day01_01:
         self.reverse_number_list.reverse()
         return
 
-    def do(self, target_sum):
+    def do(self, target_sum) -> None:
         # evaluate the number list items
         if self.number_list is not None:
             for index, number in enumerate(self.number_list):
@@ -30,7 +31,7 @@ class Day01_01:
             print("The number list was None!")
         print(self.results.values())
 
-    def test_number(self, result, index):
+    def test_number(self, result, index) -> None:
         # check if the number at the index and a number from the list form the result sum
         a = self.number_list[index]
         # go backwards through the sortet list and stop when the sums get too low
@@ -44,8 +45,8 @@ class Day01_01:
                 # the sum can no longer be reached, no need to check further
                 break
 
-class Day01_02:
-    def __init__(self, input_path):
+class Day01_02(AdventDay):
+    def __init__(self, input_path) -> None:
         # initialize the first puzzle
         # create a results dict, parse the list of numbers and sort it
         self.results = dict()
@@ -58,7 +59,7 @@ class Day01_02:
         self.reverse_number_list.reverse()
         return
 
-    def do(self, target_sum):
+    def do(self, target_sum) -> None:
         # evaluate the number list items
         if self.number_list is not None:
             for index, number in enumerate(self.number_list):
@@ -80,7 +81,7 @@ class Day01_02:
             print("The number list was None!")
         print(self.results.values())
 
-    def test_number(self, result, index):
+    def test_number(self, result, index) -> None:
         a = self.number_list[index]
         for b in self.reverse_number_list:
             if a+b > result:
