@@ -108,7 +108,7 @@ class Day05_01(AdventDay):
     def __init__(self, input_path : str) -> None:
         self.__plane = Plane()
         self.__boarding_pass_numbers = list()
-        for line in open(input_path):
+        for line in open(input_path, "r"):
             line = line.strip()
             self.__boarding_pass_numbers.append(line)
             pass
@@ -131,7 +131,7 @@ class Day05_02(AdventDay):
         self.__plane = Plane()
         self.__boarding_pass_numbers = list()
         self.__boarding_passes = list()
-        for line in open(input_path):
+        for line in open(input_path, "r"):
             line = line.strip()
             self.__boarding_pass_numbers.append(line)
             pass
