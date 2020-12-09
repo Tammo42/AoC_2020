@@ -1,6 +1,5 @@
 import os
 from adventofcode import AdventDay
-from functools import reduce
 
 class LuggageRuleParser:
     @staticmethod
@@ -12,6 +11,7 @@ class LuggageRuleParser:
         luggage_dict[color] = included_bags
         pass
     pass
+
 class Day07_01(AdventDay):
     def __init__(self, input_path : str) -> None:
         self.in_file = open(input_path, "r")
@@ -66,7 +66,6 @@ class Day07_02(AdventDay):
     pass
 
 input_path = os.path.dirname(os.path.realpath(__file__)) + "/07-01_input.txt"
-#input_path = os.path.dirname(os.path.realpath(__file__)) + "/07-01_input_tmp.txt"
 mission = Day07_01(input_path)
 mission.do()
 print("")
