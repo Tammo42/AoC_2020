@@ -32,7 +32,6 @@ class Day07_01(AdventDay):
             if self.rec_rules(bag[1], multiplicator=multiplicator*bag[0], depth=depth+1):
                 self.contains_target.add(color)
                 return True
-                pass
             pass
         return False
 
@@ -59,7 +58,6 @@ class Day07_02(AdventDay):
                 count += rec_rules(bag[1], depth=depth+1, count=0) * bag[0] + bag[0]
                 pass
             return count
-            pass
 
         print(rec_rules("shiny gold"))
         pass
