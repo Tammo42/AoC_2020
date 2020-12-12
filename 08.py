@@ -89,7 +89,6 @@ class Day08_01(AdventDay):
 
 class Day08_02(AdventDay):
     def __init__(self, input_path : str) -> None:
-        self.executor = ThreadPoolExecutor(8)
         self.program = []
         for line in open(input_path, "r"):
             line = line.strip()
