@@ -1,7 +1,11 @@
-import os
 from adventofcode import AdventDay
+from concurrent.futures import ThreadPoolExecutor
+import os
 
 class ProgLine:
+    def copy(self):
+        return ProgLine(self.cmd, self.arg)
+
     def __init__(self, cmd, arg, exe=False):
         self.cmd = cmd
         self.arg = arg
@@ -14,10 +18,6 @@ class ProgLine:
     pass
 
 class ProgRunner:
-    def __call__(self, *args, **kwargs):
-        print("Called", self.__class__.__name__)
-        pass
-
     def __init__(self, program, start_line=0, accumulator=0):
         self.position = start_line
         self.program = program
@@ -30,6 +30,7 @@ class ProgRunner:
     def execute_line(self, line : ProgLine):
         line.set_executed()
         cmd = line.cmd
+        #print(cmd)
         if cmd == "acc":
             self.accumulator += line.arg
             self.position += 1
@@ -59,14 +60,14 @@ class ProgRunner:
         while self.position >= 0 and self.position < len(self.program):
             self.step()
             pass
+        print("The accumulator is at", self.accumulator)
         pass
 
-    def run_until_repeat(self):
+    def run_until_repeat(self) -> (bool,int):
         while self.step_unless_repeat() \
                 and self.position >= 0 and self.position < len(self.program):
             pass
-        print("acc", self.accumulator)
-        pass
+        return (not len(self.program) == self.position, self.accumulator)
     pass
 
 class Day08_01(AdventDay):
@@ -81,12 +82,14 @@ class Day08_01(AdventDay):
 
     def do(self) -> None:
         p = ProgRunner(self.program)
-        p.run_until_repeat()
+        (_, acc) = p.run_until_repeat()
+        print("The accumulator is at", acc)
         pass
     pass
 
 class Day08_02(AdventDay):
     def __init__(self, input_path : str) -> None:
+        self.executor = ThreadPoolExecutor(8)
         self.program = []
         for line in open(input_path, "r"):
             line = line.strip()
@@ -95,13 +98,40 @@ class Day08_02(AdventDay):
             pass
         pass
 
-    def replace_line(self, line_num, instr):
-        self.program[line_num].cmd = instr
-        pass
+    def replace_line(self, program, line_num, instr):
+        program[line_num].cmd = instr
+        return program
+    
+    def program_with_replacement(self, index, instr):
+        return ProgRunner(self.replace_line([l.copy() for l in self.program], index, instr))
 
     def do(self) -> None:
-        p = ProgRunner(self.program)
-        p.run_until_repeat()
+        progRunners = list()
+        for index, line in enumerate(self.program):
+            if line.cmd == "jmp":
+                progRunners.append(self.program_with_replacement(index, "nop"))
+                pass
+            elif line.cmd == "nop":
+                progRunners.append(self.program_with_replacement(index, "jmp"))
+                pass
+            else:
+                pass
+            pass
+        with ThreadPoolExecutor(max_workers=5) as executor:
+            futures_to_p = {executor.submit(p.run_until_repeat): p for p in progRunners}
+            for future in futures_to_p:
+                try:
+                    (interrupted, result) = future.result()
+                except Exception:
+                    print("An error occured.")
+                    pass
+                else:
+                    if not interrupted:
+                        print("The accumulator is at", result)
+                        pass
+                    pass
+                pass
+            pass
         pass
     pass
 
